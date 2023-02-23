@@ -6,20 +6,18 @@
  * @author (You Again)
  * @version (0.1)
  */
-public class Grok
-{
-    private static final int DEFAULT_POWER_LEVEL=50;
+public class  Grok {
+    private static final int DEFAULT_POWER_LEVEL = 50;
     private static final int MAX_POWER_LEVEL = 100;
 
     // instance variables
     private int powerLevel;
-    private boolean isAlive;
+    private boolean isAlive = true;
 
     /*
      * Initializes a Grok object to the default power level of 50.
      */
-    public Grok()
-    {
+    public Grok() {
         setPowerLevel(DEFAULT_POWER_LEVEL);
     }
 
@@ -28,25 +26,32 @@ public class Grok
      *
      * @param powerLevel power level of this Grok
      */
-    public Grok(int powerLevel)
-    {
-        setPowerLevel(powerLevel);
+    public Grok(int powerLevel) {
+        if (powerLevel > MAX_POWER_LEVEL) {
+            setPowerLevel(MAX_POWER_LEVEL);
+        } else {
+            setPowerLevel(powerLevel);
+        }
     }
 
-    // accessor methods
 
-    /*
-     * Returns the power level of this Grok.
-     * @return returns the power level of this Grok
-     */
-    public int getPowerLevel()
-    {
-        return powerLevel;
-    }
+        // accessor methods
 
-    public boolean isDead()
-    {
-        // TODO: replace this line with your code here
+        /*
+         * Returns the power level of this Grok.
+         * @return returns the power level of this Grok
+         */
+        public int getPowerLevel ()
+        {
+            return powerLevel;
+
+        }public boolean isDead () {
+        if (powerLevel <= 0) {
+            isAlive = false;
+        } else {
+            isAlive = true;
+        }
+        return !isAlive;
     }
 
     // mutator methods
@@ -55,10 +60,19 @@ public class Grok
      * Sets the power level of this Grok.
      * @param powerLevel the power value to set for this Grok.
      */
-    public void setPowerLevel(int powerLevel)
-    {
-        this.powerLevel = powerLevel;
+public void setPowerLevel(int powerLevel) {
+
+    if (isAlive) {
+        if (powerLevel > 100) {
+            this.powerLevel = MAX_POWER_LEVEL;
+        } else if (powerLevel <= 0) {
+            this.powerLevel = 0;
+            isAlive = false;
+        } else {
+            this.powerLevel = powerLevel;
+        }
     }
+}
 
     /*
      * Set the power level of this Grok to the power level of
@@ -69,6 +83,10 @@ public class Grok
     public void takePowerPill(PowerPill pill)
     {
         setPowerLevel(powerLevel + pill.getPower());
+        if (powerLevel > MAX_POWER_LEVEL)
+        {
+            setPowerLevel(MAX_POWER_LEVEL);
+        }
     }
 
     /*
@@ -78,6 +96,12 @@ public class Grok
     public void tookHit()
     {
         setPowerLevel(powerLevel - 5);
+        if (powerLevel <= 0)
+        {
+            isAlive = false;
+            setPowerLevel(0);
+
+        }
     }
 
     //================== Do Not Touch Code Below this line =============================
